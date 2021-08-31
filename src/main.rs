@@ -5,6 +5,8 @@ use axum::{
 };
 use cloudevents::Event;
 use http::StatusCode;
+use std::net::SocketAddr;
+use tower_http::trace::TraceLayer;
 
 fn app() -> Router<BoxRoute> {
     Router::new()
@@ -21,8 +23,18 @@ fn app() -> Router<BoxRoute> {
 
 #[tokio::main]
 async fn main() {
-    axum::Server::bind(&"0.0.0.0:8080".parse().unwrap())
-        .serve(app().into_make_service())
+    if std::env::var("RUST_LOG").is_err() {
+        std::env::set_var(
+            "RUST_LOG",
+            "example_tracing_aka_logging=debug,tower_http=debug",
+        )
+    }
+    tracing_subscriber::fmt::init();
+    let service = app().layer(TraceLayer::new_for_http());
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    tracing::debug!("listening on {}", addr);
+    axum::Server::bind(&addr)
+        .serve(service.into_make_service())
         .await
         .unwrap();
 }
