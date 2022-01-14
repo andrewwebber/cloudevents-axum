@@ -1,6 +1,5 @@
 use axum::{
-    handler::{get, post},
-    routing::BoxRoute,
+    routing::{get, post},
     Router,
 };
 use cloudevents::Event;
@@ -8,7 +7,7 @@ use http::StatusCode;
 use std::net::SocketAddr;
 use tower_http::trace::TraceLayer;
 
-fn app() -> Router<BoxRoute> {
+fn app() -> Router {
     Router::new()
         .route("/", get(|| async { "hello from cloudevents server" }))
         .route(
@@ -18,7 +17,6 @@ fn app() -> Router<BoxRoute> {
                 (StatusCode::OK, event)
             }),
         )
-        .boxed()
 }
 
 #[tokio::main]

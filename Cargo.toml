@@ -5,14 +5,14 @@ edition = "2018"
 
 [dev-dependencies]
 chrono = "0.4.19"
-cloudevents-sdk = { git = "https://github.com/andrewwebber/sdk-rust.git", branch = "http", features = ["axum", "reqwest"]}
+cloudevents-sdk = { git = "https://github.com/andrewwebber/sdk-rust.git", branch = "master", features = ["axum", "reqwest"]}
 reqwest = "0.11.4"
 
 
 [dependencies]
 async-trait = "0.1.51"
-axum = "0.2.3"
-cloudevents-sdk = { git = "https://github.com/andrewwebber/sdk-rust.git", branch = "http", features = ["axum"]}
+axum = "0.4.0"
+cloudevents-sdk = { git = "https://github.com/andrewwebber/sdk-rust.git", branch = "master", features = ["axum"]}
 futures = "0.3.17"
 http = "0.2.4"
 http-body = "0.4.3"
